@@ -65,7 +65,7 @@ public class DiccionarioNumerador {
 
     private static void initDecenas() {
         decenas.put("diez", 10);
-        decenas.put("viente", 20);
+        decenas.put("veinte", 20);
         decenas.put("treinta", 30);
         decenas.put("cuarenta", 40);
         decenas.put("cincuenta", 50);
