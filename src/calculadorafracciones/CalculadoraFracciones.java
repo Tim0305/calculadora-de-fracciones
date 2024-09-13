@@ -56,8 +56,6 @@ public class CalculadoraFracciones {
             System.out.println();
         }
 
-        System.out.println(operador.getOperador());
-
         // TODO 3. Separar el prompt en los operandos
         String[] operandos = prompt.split(operador.getOperador());
 

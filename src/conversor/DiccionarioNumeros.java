@@ -2,16 +2,18 @@ package conversor;
 
 import java.util.HashMap;
 
-public class DiccionarioNumerador {
+public class DiccionarioNumeros {
 
     private static HashMap<String, Integer> digitos = new HashMap<>();
     private static HashMap<String, Integer> especiales = new HashMap<>();
     private static HashMap<String, Integer> decenas = new HashMap<>();
+    private static HashMap<String, Integer> multiplicadores = new HashMap<>();
 
     static {
         initDigitos();
         initEspeciales();
         initDecenas();
+        initMultiplicadores();
     }
 
     public static int getDigito(String key) {
@@ -73,6 +75,10 @@ public class DiccionarioNumerador {
         decenas.put("setenta", 70);
         decenas.put("ochenta", 80);
         decenas.put("noventa", 90);
+    }
+
+    private static void initMultiplicadores() {
+        multiplicadores.put("mil", 1000);
     }
 
 }

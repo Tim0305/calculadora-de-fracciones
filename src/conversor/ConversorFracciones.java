@@ -27,15 +27,15 @@ public class ConversorFracciones {
         } else if (componentes[0].equalsIgnoreCase("un")) {
             denominadorString = buildStringFromIndex(componentes, 1);
             return 1;
-        } else if (DiccionarioNumerador.existsDigito(componentes[0])) {
+        } else if (DiccionarioNumeros.existsDigito(componentes[0])) {
             denominadorString = buildStringFromIndex(componentes, 1);
-            return DiccionarioNumerador.getDigito(componentes[0]);
+            return DiccionarioNumeros.getDigito(componentes[0]);
         }
 
         // Especiales
-        if (DiccionarioNumerador.existsEspecial(componentes[0])) {
+        if (DiccionarioNumeros.existsEspecial(componentes[0])) {
             denominadorString = buildStringFromIndex(componentes, 1);
-            return DiccionarioNumerador.getEspecial(componentes[0]);
+            return DiccionarioNumeros.getEspecial(componentes[0]);
         }
 
         // Veinti
@@ -48,8 +48,8 @@ public class ConversorFracciones {
                 throw new RuntimeException("El numerador 'veintiuno' no es un numerador valido");
             } else if (digito.equalsIgnoreCase("un")) {
                 numerador++;
-            } else if (DiccionarioNumerador.existsDigito(digito)) {
-                numerador += DiccionarioNumerador.getDigito(digito);
+            } else if (DiccionarioNumeros.existsDigito(digito)) {
+                numerador += DiccionarioNumeros.getDigito(digito);
             }
 
             denominadorString = buildStringFromIndex(componentes, 1);
@@ -57,14 +57,14 @@ public class ConversorFracciones {
         }
 
         // Decenas
-        if (DiccionarioNumerador.existsDecena(componentes[0])) {
-            int numerador = DiccionarioNumerador.getDecena(componentes[0]);
+        if (DiccionarioNumeros.existsDecena(componentes[0])) {
+            int numerador = DiccionarioNumeros.getDecena(componentes[0]);
 
             // si hay mas de dos componentes puedo acceder a la proxima pos
             if (componentes.length > 1) {
                 if (componentes[1].equalsIgnoreCase("y")) {
-                    if (DiccionarioNumerador.existsDigito(componentes[2])) {
-                        numerador += DiccionarioNumerador.getDigito(componentes[2]);
+                    if (DiccionarioNumeros.existsDigito(componentes[2])) {
+                        numerador += DiccionarioNumeros.getDigito(componentes[2]);
                         denominadorString = buildStringFromIndex(componentes, 3);
                     }
                 } else {
