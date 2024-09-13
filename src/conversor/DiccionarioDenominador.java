@@ -15,7 +15,7 @@ public class DiccionarioDenominador {
 
     private static void initDigitos() {
         digitos.put("ceroavos", 0);
-        digitos.put("enteros", 0);
+        digitos.put("unavo", 0);
         digitos.put("medios", 0);
         digitos.put("tercios", 0);
         digitos.put("cuartos", 0);
@@ -30,5 +30,21 @@ public class DiccionarioDenominador {
         especiales.put("decimos", 10);
         especiales.put("centesimos", 100);
         especiales.put("milesimos", 1000);
+    }
+
+    public static int getDigito(String key) {
+        return digitos.get(key);
+    }
+
+    public static int getEspecial(String key) {
+        return especiales.get(key);
+    }
+
+    public static boolean existsDigito(String key) {
+        return digitos.containsKey(key);
+    }
+
+    public static boolean existsEspecial(String key) {
+        return especiales.containsKey(key);
     }
 }
