@@ -96,6 +96,46 @@ public class ConversorFracciones {
         return 0;
     }
 
+    private static int getDenominador(int numerador, String denominadorString) {
+        String[] componentes = denominadorString.split(" ");
+        String terminacion = "";
+        // Plural o Singular
+        if (numerador != 1)
+            terminacion = "s";
+
+        // Es entero?
+        if (componentes[0].equalsIgnoreCase("entero" + terminacion)) {
+            if (componentes.length > 1) {
+                throw new RuntimeException("El denominador: " + denominadorString + " no es un denominador valido");
+            }
+            return 1;
+        }
+        // Es unavo?
+        else if (componentes[0].equalsIgnoreCase("unavo" + terminacion) {
+            throw new RuntimeException("El denominador 'unavo" + terminacion + "' no es un denominador valido");
+        }
+        // Es otro digito?
+        if (DiccionarioDenominador.existsDigito(componentes[0] + terminacion)) {
+            if (componentes.length > 1) {
+                throw new RuntimeException("El denominador: " + denominadorString + " no es un denominador valido");
+            }
+            return DiccionarioDenominador.getDigito(componentes[0] + terminacion);
+        }
+
+        // Es especial?
+
+        if (DiccionarioDenominador.existsEspecial(componentes[0] + terminacion)) {
+            if (componentes.length > 1) {
+                throw new RuntimeException("El denominador: " + denominadorString + " no es un denominador valido");
+            }
+            return DiccionarioDenominador.getEspecial(componentes[0] + terminacion);
+        }
+
+        // Decimales
+
+
+    }
+
     /*
     Este metodo recibe un arreglo de strings y un indice a partir del cual se va a construir un nuevo string
     Ejemplo: si el indice es 1 se construira un string a partir del indice 1 del arreglo de strings hasta el ultimo elemento del array
