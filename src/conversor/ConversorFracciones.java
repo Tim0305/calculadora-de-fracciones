@@ -22,12 +22,7 @@ public class ConversorFracciones {
         String[] componentes = fraccion.split(" ");
 
         // Digito
-        if (componentes[0].equalsIgnoreCase("uno")) {
-            throw new Error("El numerador 'uno' no es un numerador valido");
-        } else if (componentes[0].equalsIgnoreCase("un")) {
-            denominadorString = buildStringFromIndex(componentes, 1);
-            return 1;
-        } else if (DiccionarioNumeros.existsDigito(componentes[0])) {
+        if (DiccionarioNumeros.existsDigito(componentes[0])) {
             denominadorString = buildStringFromIndex(componentes, 1);
             return DiccionarioNumeros.getDigito(componentes[0]);
         }
@@ -44,16 +39,11 @@ public class ConversorFracciones {
 
             String digito = componentes[0].replace("veinti", "");
 
-            if (digito.equalsIgnoreCase("uno")) {
-                throw new RuntimeException("El numerador 'veintiuno' no es un numerador valido");
-            } else if (digito.equalsIgnoreCase("un")) {
-                numerador++;
-            } else if (DiccionarioNumeros.existsDigito(digito)) {
+            if (DiccionarioNumeros.existsDigito(digito)) {
                 numerador += DiccionarioNumeros.getDigito(digito);
+                denominadorString = buildStringFromIndex(componentes, 1);
+                return numerador;
             }
-
-            denominadorString = buildStringFromIndex(componentes, 1);
-            return numerador;
         }
 
         // Decenas
@@ -67,21 +57,50 @@ public class ConversorFracciones {
                         numerador += DiccionarioNumeros.getDigito(componentes[2]);
                         denominadorString = buildStringFromIndex(componentes, 3);
                     }
+                    else
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("El numerador <");
+                        sb.append(componentes[0]);
+                        sb.append(" ");
+                        sb.append(componentes[1]);
+                        sb.append(" ");
+                        sb.append(componentes[2]);
+                        sb.append("> no es valido");
+                        throw new RuntimeException(sb.toString());
+                    }
                 } else {
                     denominadorString = buildStringFromIndex(componentes, 1);
                 }
             }
-
             return numerador;
         }
+        throw new RuntimeException("El numerador " + componentes[0] + " no es valido'");
+    }
 
-        throw new RuntimeException("El numerador no es valido'");
+    private static int getDenominador(int numerador, String denominadorString)
+    {
+        /*
+        Si numerador es igual a 1 entonces se agrega una 's' para obtener el valor del numero
+        Si no es igual, entonces no se agrega nada.
+        Ejemplo
+        un tercios
+        tercioss -> esto no se encuentra por lo que da un error
+        un tercio
+        tercios -> esto si se encuentra en el diccionario
+         */
+        String terminacion = numerador == 1 ? "s" : "";
+
+        String [] componentes = denominadorString.split(" ");
+
+        return 0;
     }
 
     /*
     Este metodo recibe un arreglo de strings y un indice a partir del cual se va a construir un nuevo string
     Ejemplo: si el indice es 1 se construira un string a partir del indice 1 del arreglo de strings hasta el ultimo elemento del array
      */
+
     private static String buildStringFromIndex(String[] arrayStrings, int index) {
 
         StringBuilder completeString = new StringBuilder();

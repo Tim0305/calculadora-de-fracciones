@@ -42,7 +42,7 @@ public class DiccionarioNumeros {
 
     private static void initDigitos() {
         digitos.put("cero", 0);
-        digitos.put("uno", 1);
+        digitos.put("un", 1);
         digitos.put("dos", 2);
         digitos.put("tres", 3);
         digitos.put("cuatro", 4);
@@ -78,7 +78,7 @@ public class DiccionarioNumeros {
     }
 
     private static void initMultiplicadores() {
+        multiplicadores.put("cientos", 100);
         multiplicadores.put("mil", 1000);
     }
-
 }
