@@ -1,7 +1,5 @@
 package conversor;
 
-import fraccion.Fraccion;
-
 public class ConversorFracciones {
 
     private static String denominadorString;
@@ -9,8 +7,9 @@ public class ConversorFracciones {
     public static void toFraccion(String fraccionString) {
         // Numerador
         int numerador = getNumerador(fraccionString.trim());
+        int denominador = getDenominador(numerador, denominadorString);
         System.out.println("Numerador: " + numerador);
-        System.out.println(denominadorString);
+        System.out.println("Denominador: " + denominador);
     }
 
     /*
@@ -20,17 +19,17 @@ public class ConversorFracciones {
     private static int getNumerador(String fraccion) {
 
         String[] componentes = fraccion.split(" ");
+        // Obtenemos el denominador por la ultima posicion porque el denominador siempre es una unica palabra
+        denominadorString = componentes[componentes.length - 1];
 
         // Digito
-        if (DiccionarioNumeros.existsDigito(componentes[0])) {
-            denominadorString = buildStringFromIndex(componentes, 1);
-            return DiccionarioNumeros.getDigito(componentes[0]);
+        if (DiccionarioNumerador.existsDigito(componentes[0])) {
+            return DiccionarioNumerador.getDigito(componentes[0]);
         }
 
         // Especiales
-        if (DiccionarioNumeros.existsEspecial(componentes[0])) {
-            denominadorString = buildStringFromIndex(componentes, 1);
-            return DiccionarioNumeros.getEspecial(componentes[0]);
+        if (DiccionarioNumerador.existsEspecial(componentes[0])) {
+            return DiccionarioNumerador.getEspecial(componentes[0]);
         }
 
         // Veinti
@@ -39,24 +38,35 @@ public class ConversorFracciones {
 
             String digito = componentes[0].replace("veinti", "");
 
-            if (DiccionarioNumeros.existsDigito(digito)) {
-                numerador += DiccionarioNumeros.getDigito(digito);
-                denominadorString = buildStringFromIndex(componentes, 1);
+            if (DiccionarioNumerador.existsDigito(digito)) {
+                numerador += DiccionarioNumerador.getDigito(digito);
                 return numerador;
             }
         }
 
         // Decenas
-        if (DiccionarioNumeros.existsDecena(componentes[0])) {
-            int numerador = DiccionarioNumeros.getDecena(componentes[0]);
+        if (DiccionarioNumerador.existsDecena(componentes[0])) {
+            int numerador = DiccionarioNumerador.getDecena(componentes[0]);
 
             // si hay mas de dos componentes puedo acceder a la proxima pos
             if (componentes.length > 1) {
                 if (componentes[1].equalsIgnoreCase("y")) {
-                    if (DiccionarioNumeros.existsDigito(componentes[2])) {
-                        numerador += DiccionarioNumeros.getDigito(componentes[2]);
-                        denominadorString = buildStringFromIndex(componentes, 3);
-                    }
+                    if(!componentes[2].equalsIgnoreCase("cero"))
+                        if (DiccionarioNumerador.existsDigito(componentes[2])) {
+                            numerador += DiccionarioNumerador.getDigito(componentes[2]);
+                        }
+                        else
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("El numerador <");
+                            sb.append(componentes[0]);
+                            sb.append(" ");
+                            sb.append(componentes[1]);
+                            sb.append(" ");
+                            sb.append(componentes[2]);
+                            sb.append("> no es valido");
+                            throw new RuntimeException(sb.toString());
+                        }
                     else
                     {
                         StringBuilder sb = new StringBuilder();
@@ -69,8 +79,6 @@ public class ConversorFracciones {
                         sb.append("> no es valido");
                         throw new RuntimeException(sb.toString());
                     }
-                } else {
-                    denominadorString = buildStringFromIndex(componentes, 1);
                 }
             }
             return numerador;
@@ -89,11 +97,61 @@ public class ConversorFracciones {
         un tercio
         tercios -> esto si se encuentra en el diccionario
          */
-        String terminacion = numerador == 1 ? "s" : "";
 
-        String [] componentes = denominadorString.split(" ");
+        if (numerador == 1)
+            denominadorString += "s";
 
-        return 0;
+        System.out.println(denominadorString);
+
+        // Es digito?
+        if (DiccionarioDenominador.existsDigito(denominadorString))
+            return DiccionarioDenominador.getDigito(denominadorString);
+
+        // Es decimal
+        if (DiccionarioDenominador.existsDecimal(denominadorString))
+            return DiccionarioDenominador.getDecimal(denominadorString);
+
+        // Es veinti
+        if (denominadorString.toLowerCase().contains("veinti"))
+        {
+            String digito = denominadorString.replace("veinti", "");
+            digito = digito.replace("avos", "");
+            if (DiccionarioNumerador.existsDigito(digito))
+                return 20 + DiccionarioNumerador.getDigito(digito);
+        }
+
+        // Es decimal con digito
+        StringBuilder decenaSB = new StringBuilder();
+        int denominador = 0;
+        StringBuilder digitoSB = new StringBuilder();
+        boolean isDigito = false;
+        for (int i = 0, l = denominadorString.length(); i < l; i++){
+            if(!isDigito)
+            {
+                decenaSB.append(denominadorString.charAt(i));
+                if (DiccionarioNumerador.existsDecena(decenaSB.toString()))
+                    if(denominadorString.toLowerCase().charAt(i + 1) == 'i')
+                    {
+                        denominador = DiccionarioNumerador.getDecena(decenaSB.toString());
+                        i++;
+                        isDigito = true;
+                    }
+                    else
+                        throw new RuntimeException("El denominador <" + denominadorString + "> no es valido");
+            }
+            else
+            {
+                digitoSB.append(denominadorString.charAt(i));
+            }
+        }
+
+        String digito = digitoSB.toString().replace("avos", "");
+        // Si el digito es cero no es valido
+        if(!digito.equalsIgnoreCase("cero"))
+            if (DiccionarioNumerador.existsDigito(digito))
+                return denominador + DiccionarioNumerador.getDigito(digito);
+
+        throw new RuntimeException("El denominador <" + denominadorString + "> no es valido");
     }
 
     /*

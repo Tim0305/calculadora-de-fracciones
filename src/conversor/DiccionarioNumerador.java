@@ -2,7 +2,7 @@ package conversor;
 
 import java.util.HashMap;
 
-public class DiccionarioNumeros {
+public class DiccionarioNumerador {
 
     private static HashMap<String, Integer> digitos = new HashMap<>();
     private static HashMap<String, Integer> especiales = new HashMap<>();
