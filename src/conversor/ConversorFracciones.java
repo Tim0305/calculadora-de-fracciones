@@ -166,12 +166,20 @@ public class ConversorFracciones {
     }
 
     private static String getNumeradorString(int numerador){
+
+        boolean isNegative = numerador < 0;
         StringBuilder sb = new StringBuilder();
+
+        if (isNegative)
+        {
+            numerador = Math.abs(numerador);
+            sb.append("menos ");
+        }
+
         List<Integer> digitsNumerador = getListOfDigits(numerador);
 
         int number = 0;
         boolean isCien = false;
-        boolean isMultiplicador = false;
 
         for (int i = 0, l = digitsNumerador.size(), j = l - 1; i < l; i++, j--) {
             int p = j % 3; // 0, 1, 2 -> potencias
