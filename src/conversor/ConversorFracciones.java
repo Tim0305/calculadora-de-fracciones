@@ -1,16 +1,26 @@
 package conversor;
 
+import fraccion.Fraccion;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class ConversorFracciones {
 
     private static String denominadorString;
 
-    public static void toFraccion(String fraccionString) {
-        // Numerador
+    public static Fraccion toFraccion(String fraccionString) {
         int numerador = getNumerador(fraccionString.trim());
         int denominador = getDenominador(numerador, denominadorString);
-        System.out.println("Numerador: " + numerador);
-        System.out.println("Denominador: " + denominador);
+        return new Fraccion(numerador, denominador);
     }
+
+    public static String toString(Fraccion fraccion) {
+        return getNumeradorString(fraccion.numerador);
+    }
+
+
 
     /*
     Metodo para obtener el numerador en entero y al mismo tiempo el denominador en string
@@ -86,8 +96,7 @@ public class ConversorFracciones {
         throw new RuntimeException("El numerador " + componentes[0] + " no es valido'");
     }
 
-    private static int getDenominador(int numerador, String denominadorString)
-    {
+    private static int getDenominador(int numerador, String denominadorString) {
         /*
         Si numerador es igual a 1 entonces se agrega una 's' para obtener el valor del numero
         Si no es igual, entonces no se agrega nada.
@@ -100,8 +109,6 @@ public class ConversorFracciones {
 
         if (numerador == 1)
             denominadorString += "s";
-
-        System.out.println(denominadorString);
 
         // Es digito?
         if (DiccionarioDenominador.existsDigito(denominadorString))
@@ -154,20 +161,138 @@ public class ConversorFracciones {
         throw new RuntimeException("El denominador <" + denominadorString + "> no es valido");
     }
 
-    /*
-    Este metodo recibe un arreglo de strings y un indice a partir del cual se va a construir un nuevo string
-    Ejemplo: si el indice es 1 se construira un string a partir del indice 1 del arreglo de strings hasta el ultimo elemento del array
-     */
+    private static String getNumeradorString(int numerador){
+        StringBuilder sb = new StringBuilder();
+        List<Integer> digitsNumerador = getListOfDigits(numerador);
 
-    private static String buildStringFromIndex(String[] arrayStrings, int index) {
+        int number = 0;
+        boolean isCien = false;
+        boolean isMultiplicador = false;
 
-        StringBuilder completeString = new StringBuilder();
+        for (int i = 0, l = digitsNumerador.size(), j = l - 1; i < l; i++, j--) {
+            int p = j % 3; // 0, 1, 2 -> potencias
+            String multiplicador = "";
 
-        for (int i = index, l = arrayStrings.length; i < l; i++) {
-            completeString.append(arrayStrings[i]);
-            completeString.append(" ");
+            // Multiplicador
+            int index = l - i - 1;
+
+            number = (int) Math.pow(10, p) * digitsNumerador.get(i);
+            switch (p)
+            {
+                case 0:
+                    // Digito
+                    if (number != 0) {
+                        if (isCien)
+                        {
+                            sb.append("ciento");
+                            isCien = false;
+                        }
+
+                        multiplicador = getMultiplicador(index);
+                        if (!multiplicador.isEmpty())
+                        {
+                            if (number != 1)
+                            {
+                                sb.append(DiccionarioNumerador.getDigito(number));
+                                sb.append(" ");
+
+                            }
+                            sb.append(multiplicador);
+                        }
+                        else
+                            sb.append(DiccionarioNumerador.getDigito(number));
+
+                        sb.append(" ");
+                    }
+
+                    if (isCien)
+                        sb.append("cien ");
+                    break;
+                case 1:
+                    // Especial y Decena
+
+                    if (number != 0)
+                    {
+                        if (isCien)
+                        {
+                            sb.append("ciento ");
+                            isCien = false;
+                        }
+
+                        int digito = digitsNumerador.get(++i);
+                        index = l - i - 1;
+                        j--;
+                        multiplicador = getMultiplicador(index);
+
+                        if (number == 10) // especial o decena
+                        {
+                            if (digito == 0) // Diez
+                                sb.append(DiccionarioNumerador.getDecena(number));
+                            else // Especial
+                                sb.append(DiccionarioNumerador.getEspecial(10 + digito));
+                            sb.append(" ");
+                        }
+                        else
+                        {
+                            if (digito != 0)
+                            {
+                                // Veinti
+                                if (number == 20)
+                                    sb.append("veinti");
+                                else {
+                                    sb.append(DiccionarioNumerador.getDecena(number));
+                                    sb.append(" y ");
+                                }
+
+                                sb.append(DiccionarioNumerador.getDigito(digito));
+                            }
+                            else
+                                sb.append(DiccionarioNumerador.getDecena(number));
+
+                            sb.append(" ");
+                        }
+
+                        if (!multiplicador.isEmpty())
+                        {
+                            sb.append(multiplicador);
+                            sb.append(" ");
+                        }
+                    }
+                    break;
+                case 2:
+                    //Centena
+
+                    if (number != 100) {
+                        isCien = false;
+                        sb.append(DiccionarioNumerador.getCentena(number));
+                        sb.append(" ");
+                    }
+                    else
+                        isCien = true;
+                    break;
+            }
         }
 
-        return completeString.toString();
+        return sb.toString().trim();
+    }
+
+    private static List<Integer> getListOfDigits(int number) {
+        List<Integer> digits = new ArrayList<>();
+        while (number != 0){
+            int digit = number % 10;
+            number /= 10;
+            // Siempre agregarlo al inicio porque empezamos con el ultimo digito
+            digits.add(0, digit);
+        }
+
+        return digits;
+    }
+
+    private static String getMultiplicador(int index) {
+        if (index % 3 == 0)
+        {
+            return DiccionarioNumerador.getMultiplicador((int) Math.pow(10, index));
+        }
+        return "";
     }
 }

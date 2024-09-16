@@ -64,9 +64,30 @@ public class CalculadoraFracciones {
             System.out.println("No se encontraron dos fracciones validas en el prompt");
             System.out.println();
         } else {
-            for (String operando : operandos) {
-                ConversorFracciones.toFraccion(operando);
+            try {
+                Fraccion f1 = ConversorFracciones.toFraccion(operandos[0]);
+                Fraccion f2 = ConversorFracciones.toFraccion(operandos[1]);
+                Fraccion resultado = null;
+                switch (operador){
+                    case SUMA:
+                        resultado = f1.sumarFraccion(f2);
+                        break;
+                    case RESTA:
+                        resultado = f1.restarFraccion(f2);
+                        break;
+                    case DIVISION:
+                        resultado = f1.dividirFraccion(f2);
+                        break;
+                    case MULTIPLICACION:
+                        resultado = f1.multiplicarFraccion(f2);
+                        break;
+                }
+                System.out.println(resultado);
+                System.out.println(ConversorFracciones.toString(resultado));
+            } catch (RuntimeException e) {
+                System.out.println(e.toString());
             }
+
         }
     }
 }

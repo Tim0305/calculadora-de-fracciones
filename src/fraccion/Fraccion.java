@@ -25,14 +25,16 @@ public class Fraccion {
         int num;
         int den;
 
-        if (denominador == f2.denominador) {
-            num = numerador + f2.numerador;
-            den = denominador;
-        } else {
-            den = denominador * f2.denominador;
-            num = (numerador * f2.denominador) + (f2.numerador * denominador);
-        }
+//        if (denominador == f2.denominador) {
+//            num = numerador + f2.numerador;
+//            den = denominador;
+//        } else {
+//            den = denominador * f2.denominador;
+//            num = (numerador * f2.denominador) + (f2.numerador * denominador);
+//        }
 
+        num = (numerador * f2.denominador) + (denominador * f2.numerador);
+        den = denominador * f2.denominador;
         return new Fraccion(num, den);
     }
 
@@ -40,14 +42,16 @@ public class Fraccion {
         int num;
         int den;
 
-        if (denominador == f2.denominador) {
-            num = numerador - f2.numerador;
-            den = denominador;
-        } else {
-            num = (numerador * f2.denominador) - (f2.numerador * denominador);
-            den = denominador * f2.denominador;
-        }
+//        if (denominador == f2.denominador) {
+//            num = numerador - f2.numerador;
+//            den = denominador;
+//        } else {
+//            num = (numerador * f2.denominador) - (f2.numerador * denominador);
+//            den = denominador * f2.denominador;
+//        }
 
+        num = (numerador * f2.denominador) - (denominador * f2.numerador);
+        den = denominador * f2.denominador;
         return new Fraccion(num, den);
     }
 

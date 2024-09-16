@@ -1,6 +1,7 @@
 package conversor;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class DiccionarioNumerador {
 
@@ -8,36 +9,91 @@ public class DiccionarioNumerador {
     private static HashMap<String, Integer> especiales = new HashMap<>();
     private static HashMap<String, Integer> decenas = new HashMap<>();
     private static HashMap<String, Integer> multiplicadores = new HashMap<>();
+    private static HashMap<String, Integer> centenas = new HashMap<>();
 
     static {
         initDigitos();
         initEspeciales();
         initDecenas();
         initMultiplicadores();
+        initCentenas();
     }
 
     public static int getDigito(String key) {
-        return digitos.get(key);
+        return digitos.get(key.toLowerCase());
     }
 
     public static int getEspecial(String key) {
-        return especiales.get(key);
+        return especiales.get(key.toLowerCase());
     }
 
     public static int getDecena(String key) {
-        return decenas.get(key);
+        return decenas.get(key.toLowerCase());
+    }
+
+    public static int getCentena(String key) {
+        return centenas.get(key.toLowerCase());
     }
 
     public static boolean existsDigito(String key) {
-        return digitos.containsKey(key);
+        return digitos.containsKey(key.toLowerCase());
     }
 
     public static boolean existsEspecial(String key) {
-        return especiales.containsKey(key);
+        return especiales.containsKey(key.toLowerCase());
     }
 
     public static boolean existsDecena(String key) {
-        return decenas.containsKey(key);
+        return decenas.containsKey(key.toLowerCase());
+    }
+
+    public static boolean existsCentena(String key) {
+        return centenas.containsKey(key.toLowerCase());
+    }
+
+    public static String getDigito(int value) {
+        for(Map.Entry<String, Integer> entry : digitos.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
+    }
+
+    public static String getEspecial(int value) {
+        for(Map.Entry<String, Integer> entry : especiales.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
+    }
+
+    public static String getDecena(int value) {
+        for(Map.Entry<String, Integer> entry : decenas.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
+    }
+
+    public static String getCentena(int value) {
+        for(Map.Entry<String, Integer> entry : centenas.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
+    }
+
+    public static String getMultiplicador(int value) {
+        for(Map.Entry<String, Integer> entry : multiplicadores.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
     }
 
     private static void initDigitos() {
@@ -77,8 +133,19 @@ public class DiccionarioNumerador {
         decenas.put("noventa", 90);
     }
 
+    private static void initCentenas() {
+        centenas.put("ciento", 100);
+        centenas.put("doscientos", 200);
+        centenas.put("trescientos", 300);
+        centenas.put("cuatrocientos", 400);
+        centenas.put("quinientos", 500);
+        centenas.put("seiscientos", 600);
+        centenas.put("setecientos", 700);
+        centenas.put("ochocientos", 800);
+        centenas.put("novecientos", 900);
+    }
+
     private static void initMultiplicadores() {
-        multiplicadores.put("cientos", 100);
         multiplicadores.put("mil", 1000);
     }
 }
