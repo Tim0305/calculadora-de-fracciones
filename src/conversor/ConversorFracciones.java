@@ -17,7 +17,11 @@ public class ConversorFracciones {
     }
 
     public static String toString(Fraccion fraccion) {
-        return getNumeradorString(fraccion.numerador);
+        StringBuilder sb = new StringBuilder();
+        sb.append(getNumeradorString(fraccion.numerador));
+        sb.append(" ");
+        sb.append(getDenominadorString(fraccion));
+        return sb.toString().trim();
     }
 
 
@@ -274,6 +278,40 @@ public class ConversorFracciones {
         }
 
         return sb.toString().trim();
+    }
+
+    private static String getDenominadorString(Fraccion fraccion) {
+        List<Integer> digitsDenominador = getListOfDigits(fraccion.denominador);
+        String denominadorString = "";
+        char terminacion = fraccion.numerador != 1 ? 's' : (char) 0;
+
+        // Digito unico
+        if (digitsDenominador.size() == 1)
+        {
+            denominadorString = DiccionarioDenominador.getDigito(digitsDenominador.get(0));
+            if(terminacion == 0)
+                // Eliminar el ultimo caracter que es la 's'
+                denominadorString = denominadorString.substring(0, denominadorString.length() - 1);
+            return denominadorString;
+        }
+        else {
+            denominadorString = getNumeradorString(fraccion.denominador);
+
+            if (denominadorString.equalsIgnoreCase("diez"))
+                return "decimo" + terminacion;
+            else if (denominadorString.equalsIgnoreCase("cien"))
+                return "centesimo" + terminacion;
+            else if (denominadorString.equalsIgnoreCase("mil"))
+                return "milesimo" + terminacion;
+            else {
+                denominadorString = denominadorString.replace(" y ", "i");
+                denominadorString = denominadorString.replace(" ", "");
+                denominadorString += "avo" + terminacion;
+            }
+        }
+
+        return denominadorString;
+
     }
 
     private static List<Integer> getListOfDigits(int number) {

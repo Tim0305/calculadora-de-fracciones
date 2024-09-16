@@ -61,4 +61,31 @@ public class DiccionarioDenominador {
     public static boolean existsDecimal(String key) {
         return decimales.containsKey(key.toLowerCase());
     }
+
+    public static String getDigito(int value) {
+        for(Map.Entry<String, Integer> entry : digitos.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
+    }
+
+    public static String getDecimal(int value) {
+        for(Map.Entry<String, Integer> entry : decimales.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
+    }
+
+    public static String getMultiplicador(int value) {
+        for(Map.Entry<String, Integer> entry : multiplicadores.entrySet())
+        {
+            if (entry.getValue() == value)
+                return entry.getKey();
+        }
+        return "";
+    }
 }
