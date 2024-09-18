@@ -24,8 +24,6 @@ public class ConversorFracciones {
         return sb.toString().trim();
     }
 
-
-
     /*
     Metodo para obtener el numerador en entero y al mismo tiempo el denominador en string
     Cuando se ejecuta correctamente el metodo el denominador se almacena en la variable denominadorString
@@ -65,12 +63,10 @@ public class ConversorFracciones {
             // si hay mas de dos componentes puedo acceder a la proxima pos
             if (componentes.length > 1) {
                 if (componentes[1].equalsIgnoreCase("y")) {
-                    if(!componentes[2].equalsIgnoreCase("cero"))
+                    if (!componentes[2].equalsIgnoreCase("cero")) {
                         if (DiccionarioNumerador.existsDigito(componentes[2])) {
                             numerador += DiccionarioNumerador.getDigito(componentes[2]);
-                        }
-                        else
-                        {
+                        } else {
                             StringBuilder sb = new StringBuilder();
                             sb.append("El numerador <");
                             sb.append(componentes[0]);
@@ -81,8 +77,7 @@ public class ConversorFracciones {
                             sb.append("> no es valido");
                             throw new RuntimeException(sb.toString());
                         }
-                    else
-                    {
+                    } else {
                         StringBuilder sb = new StringBuilder();
                         sb.append("El numerador <");
                         sb.append(componentes[0]);
@@ -111,24 +106,27 @@ public class ConversorFracciones {
         tercios -> esto si se encuentra en el diccionario
          */
 
-        if (numerador == 1)
+        if (numerador == 1) {
             denominadorString += "s";
+        }
 
         // Es digito?
-        if (DiccionarioDenominador.existsDigito(denominadorString))
+        if (DiccionarioDenominador.existsDigito(denominadorString)) {
             return DiccionarioDenominador.getDigito(denominadorString);
+        }
 
         // Es decimal
-        if (DiccionarioDenominador.existsDecimal(denominadorString))
+        if (DiccionarioDenominador.existsDecimal(denominadorString)) {
             return DiccionarioDenominador.getDecimal(denominadorString);
+        }
 
         // Es veinti
-        if (denominadorString.toLowerCase().contains("veinti"))
-        {
+        if (denominadorString.toLowerCase().contains("veinti")) {
             String digito = denominadorString.replace("veinti", "");
             digito = digito.replace("avos", "");
-            if (DiccionarioNumerador.existsDigito(digito))
+            if (DiccionarioNumerador.existsDigito(digito)) {
                 return 20 + DiccionarioNumerador.getDigito(digito);
+            }
         }
 
         // Es decimal con digito
@@ -136,42 +134,40 @@ public class ConversorFracciones {
         int denominador = 0;
         StringBuilder digitoSB = new StringBuilder();
         boolean isDigito = false;
-        for (int i = 0, l = denominadorString.length(); i < l; i++){
-            if(!isDigito)
-            {
+        for (int i = 0, l = denominadorString.length(); i < l; i++) {
+            if (!isDigito) {
                 decenaSB.append(denominadorString.charAt(i));
-                if (DiccionarioNumerador.existsDecena(decenaSB.toString()))
-                    if(denominadorString.toLowerCase().charAt(i + 1) == 'i')
-                    {
+                if (DiccionarioNumerador.existsDecena(decenaSB.toString())) {
+                    if (denominadorString.toLowerCase().charAt(i + 1) == 'i') {
                         denominador = DiccionarioNumerador.getDecena(decenaSB.toString());
                         i++;
                         isDigito = true;
-                    }
-                    else
+                    } else {
                         throw new RuntimeException("El denominador <" + denominadorString + "> no es valido");
-            }
-            else
-            {
+                    }
+                }
+            } else {
                 digitoSB.append(denominadorString.charAt(i));
             }
         }
 
         String digito = digitoSB.toString().replace("avos", "");
         // Si el digito es cero no es valido
-        if(!digito.equalsIgnoreCase("cero"))
-            if (DiccionarioNumerador.existsDigito(digito))
+        if (!digito.equalsIgnoreCase("cero")) {
+            if (DiccionarioNumerador.existsDigito(digito)) {
                 return denominador + DiccionarioNumerador.getDigito(digito);
+            }
+        }
 
         throw new RuntimeException("El denominador <" + denominadorString + "> no es valido");
     }
 
-    private static String getNumeradorString(int numerador){
+    private static String getNumeradorString(int numerador) {
 
         boolean isNegative = numerador < 0;
         StringBuilder sb = new StringBuilder();
 
-        if (isNegative)
-        {
+        if (isNegative) {
             numerador = Math.abs(numerador);
             sb.append("menos ");
         }
@@ -181,6 +177,10 @@ public class ConversorFracciones {
         int number = 0;
         boolean isCien = false;
 
+        if (digitsNumerador.size() == 0) {
+            sb.append("cero ");
+        }
+
         for (int i = 0, l = digitsNumerador.size(), j = l - 1; i < l; i++, j--) {
             int p = j % 3; // 0, 1, 2 -> potencias
             String multiplicador = "";
@@ -189,44 +189,40 @@ public class ConversorFracciones {
             int index = l - i - 1;
 
             number = (int) Math.pow(10, p) * digitsNumerador.get(i);
-            switch (p)
-            {
+
+            switch (p) {
                 case 0:
                     // Digito
                     if (number != 0) {
-                        if (isCien)
-                        {
+                        if (isCien) {
                             sb.append("ciento");
                             isCien = false;
                         }
 
                         multiplicador = getMultiplicador(index);
-                        if (!multiplicador.isEmpty())
-                        {
-                            if (number != 1)
-                            {
+                        if (!multiplicador.isEmpty()) {
+                            if (number != 1) {
                                 sb.append(DiccionarioNumerador.getDigito(number));
                                 sb.append(" ");
 
                             }
                             sb.append(multiplicador);
-                        }
-                        else
+                        } else {
                             sb.append(DiccionarioNumerador.getDigito(number));
+                        }
 
                         sb.append(" ");
                     }
 
-                    if (isCien)
+                    if (isCien) {
                         sb.append("cien ");
+                    }
                     break;
                 case 1:
                     // Especial y Decena
 
-                    if (number != 0)
-                    {
-                        if (isCien)
-                        {
+                    if (number != 0) {
+                        if (isCien) {
                             sb.append("ciento ");
                             isCien = false;
                         }
@@ -239,33 +235,32 @@ public class ConversorFracciones {
                         if (number == 10) // especial o decena
                         {
                             if (digito == 0) // Diez
-                                sb.append(DiccionarioNumerador.getDecena(number));
-                            else // Especial
-                                sb.append(DiccionarioNumerador.getEspecial(10 + digito));
-                            sb.append(" ");
-                        }
-                        else
-                        {
-                            if (digito != 0)
                             {
+                                sb.append(DiccionarioNumerador.getDecena(number));
+                            } else // Especial
+                            {
+                                sb.append(DiccionarioNumerador.getEspecial(10 + digito));
+                            }
+                            sb.append(" ");
+                        } else {
+                            if (digito != 0) {
                                 // Veinti
-                                if (number == 20)
+                                if (number == 20) {
                                     sb.append("veinti");
-                                else {
+                                } else {
                                     sb.append(DiccionarioNumerador.getDecena(number));
                                     sb.append(" y ");
                                 }
 
                                 sb.append(DiccionarioNumerador.getDigito(digito));
-                            }
-                            else
+                            } else {
                                 sb.append(DiccionarioNumerador.getDecena(number));
+                            }
 
                             sb.append(" ");
                         }
 
-                        if (!multiplicador.isEmpty())
-                        {
+                        if (!multiplicador.isEmpty()) {
                             sb.append(multiplicador);
                             sb.append(" ");
                         }
@@ -278,9 +273,9 @@ public class ConversorFracciones {
                         isCien = false;
                         sb.append(DiccionarioNumerador.getCentena(number));
                         sb.append(" ");
-                    }
-                    else
+                    } else {
                         isCien = true;
+                    }
                     break;
             }
         }
@@ -294,24 +289,23 @@ public class ConversorFracciones {
         char terminacion = fraccion.numerador != 1 ? 's' : (char) 0;
 
         // Digito unico
-        if (digitsDenominador.size() == 1)
-        {
+        if (digitsDenominador.size() == 1) {
             denominadorString = DiccionarioDenominador.getDigito(digitsDenominador.get(0));
-            if(terminacion == 0)
-                // Eliminar el ultimo caracter que es la 's'
+            if (terminacion == 0) // Eliminar el ultimo caracter que es la 's'
+            {
                 denominadorString = denominadorString.substring(0, denominadorString.length() - 1);
+            }
             return denominadorString;
-        }
-        else {
+        } else {
             denominadorString = getNumeradorString(fraccion.denominador);
 
-            if (denominadorString.equalsIgnoreCase("diez"))
+            if (denominadorString.equalsIgnoreCase("diez")) {
                 return "decimo" + terminacion;
-            else if (denominadorString.equalsIgnoreCase("cien"))
+            } else if (denominadorString.equalsIgnoreCase("cien")) {
                 return "centesimo" + terminacion;
-            else if (denominadorString.equalsIgnoreCase("mil"))
+            } else if (denominadorString.equalsIgnoreCase("mil")) {
                 return "milesimo" + terminacion;
-            else {
+            } else {
                 denominadorString = denominadorString.replace(" y ", "i");
                 denominadorString = denominadorString.replace(" ", "");
                 denominadorString += "avo" + terminacion;
@@ -324,7 +318,7 @@ public class ConversorFracciones {
 
     private static List<Integer> getListOfDigits(int number) {
         List<Integer> digits = new ArrayList<>();
-        while (number != 0){
+        while (number != 0) {
             int digit = number % 10;
             number /= 10;
             // Siempre agregarlo al inicio porque empezamos con el ultimo digito
@@ -335,8 +329,7 @@ public class ConversorFracciones {
     }
 
     private static String getMultiplicador(int index) {
-        if (index % 3 == 0)
-        {
+        if (index % 3 == 0) {
             return DiccionarioNumerador.getMultiplicador((int) Math.pow(10, index));
         }
         return "";
