@@ -92,7 +92,7 @@ public class ConversorFracciones {
             }
             return numerador;
         }
-        throw new RuntimeException("El numerador " + componentes[0] + " no es valido'");
+        throw new RuntimeException("El numerador <" + componentes[0] + "> no es valido'");
     }
 
     private static int getDenominador(int numerador, String denominadorString) {
