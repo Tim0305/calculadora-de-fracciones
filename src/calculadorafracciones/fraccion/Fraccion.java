@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package fraccion;
+package calculadorafracciones.fraccion;
 
 /**
  *
@@ -16,7 +16,7 @@ public class Fraccion {
     public Fraccion(int numerador, int denominador) {
         this.numerador = numerador;
         if (denominador == 0) {
-            throw new ErrorFraccionImposible("No se puede crear una fraccion con denumerador 0");
+            throw new ErrorFraccionImposible("No se puede crear una calculadorafracciones.fraccion con denumerador 0");
         }
         this.denominador = denominador;
     }

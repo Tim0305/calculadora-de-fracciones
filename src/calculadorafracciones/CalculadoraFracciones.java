@@ -1,9 +1,8 @@
 package calculadorafracciones;
 
-import conversor.ConversorFracciones;
-import fraccion.Fraccion;
-import java.util.Scanner;
-import conversor.Operador;
+import calculadorafracciones.conversor.ConversorFracciones;
+import calculadorafracciones.fraccion.Fraccion;
+import calculadorafracciones.conversor.Operador;
 
 /**
  *

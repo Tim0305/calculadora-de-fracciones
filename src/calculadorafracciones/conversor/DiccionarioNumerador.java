@@ -1,4 +1,4 @@
-package conversor;
+package calculadorafracciones.conversor;
 
 import java.util.HashMap;
 import java.util.Map;

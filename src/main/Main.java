@@ -1,12 +1,6 @@
 package main;
 
-import calculadorafracciones.CalculadoraFracciones;
-import conversor.ConversorFracciones;
-import conversor.Operador;
-import fraccion.Fraccion;
 import gui.CalculadoraFraccionesGUI;
-
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,7 +13,7 @@ public class Main {
 //        1. Obtener el prompt del usuario
 //        2. Obtener el operador del prompt
 //        3. Separar el prompt en los operandos
-//        4. Convertir cada operando a una fraccion
+//        4. Convertir cada operando a una calculadorafracciones.fraccion
 //        5. Calcular el resultado
 //        6. Convertir el resultado a texto
 //
